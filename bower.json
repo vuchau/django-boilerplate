@@ -1,0 +1,24 @@
+{
+  "name": "django_boilerplate",
+  "version": "1.0.0",
+  "authors": [
+    "Ali Bozorgkhan <alibozorgkhan@gmail.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.20",
+    "backbone.marionette": "~2.4.2",
+    "modernizr": "~2.8.3",
+    "foundation": "~5.5.2"
+  }
+}

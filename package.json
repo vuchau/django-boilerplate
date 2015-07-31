@@ -1,0 +1,19 @@
+{
+  "name": "django_boilerplate",
+  "version": "1.0.0",
+  "description": "npm install -g grunt-cli",
+  "main": "index.js",
+  "dependencies": {
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-sass": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ali Bozorgkhan <alibozorgkhan@gmail.com>",
+  "license": "MIT"
+}
