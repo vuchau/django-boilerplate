@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     sass: {
       options: {
         loadPath: [
-          'static/bower_components/foundation/scss',
+          'django_boilerplate/static/bower_components/foundation/scss',
         ]
       },
       dist: {
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
           style: 'expanded'
         },
         files: {
-          'static/css/app.css': 'static/scss/app.scss'
+          'django_boilerplate/static/css/app.css': 'django_boilerplate/static/scss/app.scss'
         }
       }
     },
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'static/scss/**/*.scss',
+          'django_boilerplate/static/scss/**/*.scss',
         ],
         tasks: ['sass'],
         options: {
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       },
     },
 
-    clean: ["static/css"]
+    clean: ["django_boilerplate/static/css"]
   });
 
   grunt.loadNpmTasks('grunt-contrib-sass');
