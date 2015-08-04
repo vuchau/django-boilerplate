@@ -1,5 +1,5 @@
 *.pyc
 .sass-cache
 node_modules
-static/bower_components
-static/css
+django_boilerplate/static/bower_components
+django_boilerplate/static/css
