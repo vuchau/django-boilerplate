@@ -10,3 +10,9 @@ Django + Requirejs + Bower + Grunt + Foundation + Modernizr
 5. `npm install`                    	// install node packages
 6. `grunt build`                    	// build static/css/app.css
 7. `grunt`                          	// watch for scss changes
+
+
+### Run Celery
+
+1. `celery -A django_boilerplate worker -l info`							// start celery worker
+2. Open http://127.0.0.1:8000/test-celery and check your worker console		// test celery worker

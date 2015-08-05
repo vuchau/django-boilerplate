@@ -1,7 +1,9 @@
 from .forms import SignupForm, SigninForm
+from .tasks import add
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 
@@ -54,3 +56,8 @@ def signout(request):
 @login_required(login_url='/signin')
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+
+def test_celery(request):
+    add.delay(1, 2)
+    return HttpResponse("Celery task called")
