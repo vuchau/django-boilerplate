@@ -1,0 +1,18 @@
+<nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+        <li class="name">
+            <h1><a href="/">{{ settings.SITE_NAME }}</a></h1>
+        </li>
+    </ul>
+    <section class="top-bar-section">
+        <ul class="right">
+        {% if user.is_authenticated %}
+            <li><a href="/signout">Sign out</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+        {% else %}
+            <li><a href="/signin" data-modal="/signin" data-title="Sign In">Sign In</a></li>
+            <li><a href="/signup" data-modal="/signup" data-title="Sign Up">Sign Up</a></li>
+        {% endif %}
+        </ul>
+    </section>
+</nav>
