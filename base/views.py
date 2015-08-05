@@ -19,7 +19,12 @@ def signup(request):
     else:
         form = SignupForm()
 
-    return render(request, 'signup.html', {'form': form})
+    base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
+    ajax_header = 'Sign Up' if request.is_ajax() else ''
+    return render(request, 'signup.html', {
+        'form': form,
+        'base_template': base_template,
+        'ajax_header': ajax_header})
 
 
 def signin(request):
@@ -33,7 +38,12 @@ def signin(request):
     else:
         form = SigninForm()
 
-    return render(request, 'signin.html', {'form': form})
+    base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
+    ajax_header = 'Sign In' if request.is_ajax() else ''
+    return render(request, 'signin.html', {
+        'form': form,
+        'base_template': base_template,
+        'ajax_header': ajax_header})
 
 
 def signout(request):

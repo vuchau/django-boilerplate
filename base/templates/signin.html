@@ -1,11 +1,15 @@
-{% extends "layout.html" %}
+{% extends base_template %}
 
 {% block title %}Sign In{% endblock %}
 {% block description %}Sign In{% endblock %}
 
 {% block content %}
 <div class="container">
-    <form method="POST" action="">
+    {% if ajax_header %}
+    <h1 class="text-center">{{ ajax_header }}</h1>
+    <hr>
+    {% endif %}
+    <form method="POST" action="{% url 'signin' %}">
         {% csrf_token %}
 
         {% if form.non_field_errors %}

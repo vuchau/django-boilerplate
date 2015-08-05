@@ -27,12 +27,17 @@
                     <li><a href="/signout">Sign out</a></li>
                     <li><a href="/dashboard">Dashboard</a></li>
                 {% else %}
-                    <li><a href="/signin">Sign In</a></li>
-                    <li><a href="/signup">Sign Up</a></li>
+                    <li><a href="/signin" data-modal="/signin" data-title="Sign In">Sign In</a></li>
+                    <li><a href="/signup" data-modal="/signup" data-title="Sign Up">Sign Up</a></li>
                 {% endif %}
                 </ul>
             </section>
         </nav>
+
+        <div id="mainModal" class="reveal-modal" data-reveal role="dialog">
+            <div data-body></div>
+            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
 
         {% block content %}{% endblock %}
         <script data-main="{% static "js/config.js" %}" src="{% static "bower_components/requirejs/require.js" %}"></script>
