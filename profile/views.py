@@ -1,7 +1,8 @@
-from .forms import SignupForm, SigninForm, UserEditForm, UserPasswordEditForm
+from .forms import SignupForm, UserEditForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -26,14 +27,14 @@ def signup(request):
 
 def signin(request):
     if request.method == 'POST':
-        form = SigninForm(request.POST)
-        user = form.is_valid()
-        if user:
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(**form.cleaned_data)
             login(request, user)
             next_page = request.GET.get('next', 'dashboard')
             return redirect(next_page)
     else:
-        form = SigninForm()
+        form = AuthenticationForm()
 
     base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
     ajax_header = 'Sign In' if request.is_ajax() else ''
@@ -67,9 +68,9 @@ def edit_profile(request):
 @login_required(login_url='/signin')
 def edit_password(request):
     if request.method == 'POST':
-        form = UserPasswordEditForm(request.POST)
+        form = PasswordChangeForm(user=request.user, data=request.POST)
 
-        if form.is_valid(request.user):
+        if form.is_valid():
             user = User.objects.get(id=request.user.id)
             password = form.cleaned_data['new_password1']
             user.set_password(password)
@@ -78,6 +79,6 @@ def edit_password(request):
             login(request, auth_user)
             return redirect('profile_edit_password')
     else:
-        form = UserPasswordEditForm()
+        form = PasswordChangeForm(user=request.user,)
 
     return render(request, 'edit_password.html', {'form': form})
