@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 def homepage(request):
@@ -61,3 +63,8 @@ def dashboard(request):
 def test_celery(request):
     add.delay(1, 2)
     return HttpResponse("Celery task called")
+
+
+@api_view()
+def rest(request):
+    return Response({"message": "Hello, world!"})
