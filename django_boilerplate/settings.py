@@ -41,7 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_boilerplate_app'
+    'django_boilerplate_app',
+    'profile'
 )
 
 MIDDLEWARE_CLASSES = (

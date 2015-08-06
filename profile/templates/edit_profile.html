@@ -1,15 +1,11 @@
-{% extends base_template %}
+{% extends "layout.html" %}
 
-{% block title %}Signup{% endblock %}
-{% block description %}Signup{% endblock %}
+{% block title %}Edit Profile{% endblock %}
+{% block description %}Edit Profile of Django Boilerplate project{% endblock %}
 
 {% block content %}
 <div class="container">
-    {% if ajax_header %}
-    <h1 class="text-center">{{ ajax_header }}</h1>
-    <hr>
-    {% endif %}
-    <form method="POST" action="{% url 'signup' %}">
+    <form method="POST" action="{% url 'profile_edit' %}">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -66,17 +62,7 @@
                     {% endif %}
                 </div>
 
-                <div class="fieldWrapper{% if form.password.errors %} error{% endif %}">
-                    <label>
-                        Password:
-                        {{ form.password }}
-                    </label>
-                    {% if form.password.errors %}
-                    <small class="error">{{ form.password.errors }}</small>
-                    {% endif %}
-                </div>
-
-                <input type="submit" class="button small" value="Signup" />
+                <input type="submit" class="button small" value="Update Profile" />
             </div>
         </div>
     </form>
