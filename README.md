@@ -1,5 +1,5 @@
 # django-boilerplate
-Django + Requirejs + REST + Bower + Grunt + Foundation + Modernizr
+Django + Celery + REST + Requirejs + Bower + Grunt + Foundation + Modernizr
 
 ### Setup
 
