@@ -19,7 +19,7 @@ def signup(request):
         if form.is_valid():
             user = User.objects.create_user(**form.cleaned_data)
             user.save()
-            return redirect('signup')
+            return redirect('signin')
     else:
         form = SignupForm()
 
