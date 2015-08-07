@@ -10,7 +10,7 @@ def homepage(request):
     return render(request, 'homepage.html')
 
 
-@login_required(login_url='/signin')
+@login_required(login_url='signin')
 def dashboard(request):
     return render(request, 'dashboard.html')
 

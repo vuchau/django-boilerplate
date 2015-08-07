@@ -49,7 +49,7 @@ def signout(request):
     return redirect('homepage')
 
 
-@login_required(login_url='/signin')
+@login_required(login_url='signin')
 def edit_profile(request):
     if request.method == 'POST':
         form = UserEditForm(request.POST)
@@ -65,7 +65,7 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-@login_required(login_url='/signin')
+@login_required(login_url='signin')
 def edit_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
