@@ -3,3 +3,4 @@
 node_modules
 django_boilerplate/static/bower_components
 django_boilerplate/static/css
+db.sqlite3

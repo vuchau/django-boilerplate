@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 SITE_NAME = 'Django Boilerplate'
@@ -80,21 +80,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 WSGI_APPLICATION = 'django_boilerplate.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_boilerplate',
-        'USER': 'django',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
 
 
 # Internationalization
