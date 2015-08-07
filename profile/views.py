@@ -40,6 +40,7 @@ def signin(request):
     ajax_header = 'Sign In' if request.is_ajax() else ''
     return render(request, 'signin.html', {
         'form': form,
+        'next': request.GET.get('next', 'dashboard'),
         'base_template': base_template,
         'ajax_header': ajax_header})
 

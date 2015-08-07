@@ -9,7 +9,7 @@
     <h1 class="text-center">{{ ajax_header }}</h1>
     <hr>
     {% endif %}
-    <form method="POST" action="{% url 'signin' %}">
+    <form method="POST" action="{% url 'signin' %}?next={{ next }}">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
