@@ -13,7 +13,11 @@ def signup(request):
         if form.is_valid():
             user = User.objects.create_user(**form.cleaned_data)
             user.save()
-            return redirect('signin')
+            auth_user = authenticate(username=form.cleaned_data['username'],
+                                     password=form.cleaned_data['password'])
+            login(request, auth_user)
+            next_page = request.GET.get('next', 'dashboard')
+            return redirect(next_page)
     else:
         form = SignupForm()
 
