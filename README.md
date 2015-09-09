@@ -1,16 +1,20 @@
 # django-boilerplate
 Django + PostgreSQL + Celery + REST + Requirejs + Bower + Grunt + Foundation + Modernizr
 
-### Setup
+### Setup (Ubuntu)
 
-1. `pip install -r requirements.txt`	// install requirements
-2. `npm install -g bower`           	// install bower
-3. `bower install`                  	// install bower packages
-4. `npm install -g grunt-cli`       	// install grunt-cli
-5. `npm install`                    	// install node packages
-6. `grunt build`                    	// build static/css/app.css
-7. `grunt`                          	// watch for scss changes
-
+```
+pip install -r requirements.txt
+sudo npm install -g bower
+sudo apt-get install nodejs-legacy
+bower install
+sudo npm install -g grunt-cli
+sudo npm install
+sudo apt-get install ruby-full
+sudo gem install sass
+grunt build
+grunt
+```
 
 ### Run Celery
 
