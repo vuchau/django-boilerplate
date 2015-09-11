@@ -4,14 +4,19 @@ Django + PostgreSQL + Celery + REST + Requirejs + Bower + Grunt + Foundation + M
 ### Setup (Ubuntu)
 
 ```
-pip install -r requirements.txt
-sudo npm install -g bower
-sudo apt-get install nodejs-legacy
+pip install -r requirements/[DEV|STG|PROD].txt
+
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash
+nvm install stable
+
+npm install -g bower
 bower install
-sudo npm install -g grunt-cli
-sudo npm install
+npm install -g grunt-cli
+npm install
+
 sudo apt-get install ruby-full
 sudo gem install sass
+
 grunt build
 grunt
 ```
