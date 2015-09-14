@@ -7,8 +7,9 @@
         <title>{% block title %}{% endblock %} | {{ settings.SITE_NAME }}</title>
         <meta name="description" content="{% block description %}{% endblock %}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static "css/app.css" %}">
-        <script src="{% static "bower_components/modernizr/modernizr.js" %}"></script>
+        <link rel="icon" type="image/png" href="{% static "images/favicon.ico" %}">
+        <link rel="stylesheet" href="{% static "build/css/app.css" %}">
+        <script src="{% static "build/js/modernizr.js" %}"></script>
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
@@ -21,6 +22,10 @@
 
         {% block content %}{% endblock %}
 
+        {% if settings.DEBUG %}
         <script data-main="{% static "js/config.js" %}" src="{% static "bower_components/requirejs/require.js" %}"></script>
+        {% else %}
+        <script src="{% static "build/js/app.js" %}"></script>
+        {% endif %}
     </body>
 </html>

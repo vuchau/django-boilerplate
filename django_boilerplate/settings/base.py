@@ -109,6 +109,7 @@ STATICFILES_DIRS = (
 )
 
 SETTINGS_EXPORT = [
+    'DEBUG',
     'SITE_NAME',
 ]
 

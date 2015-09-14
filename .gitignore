@@ -1,6 +1,7 @@
 *.pyc
 .sass-cache
+db.sqlite3
+
 node_modules
 django_boilerplate/static/bower_components
-django_boilerplate/static/css
-db.sqlite3
+django_boilerplate/static/build
