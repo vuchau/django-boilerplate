@@ -20,7 +20,11 @@
         {% endif %}
 
         <div class="row">
+            {% if ajax_header %}
+            <div class="small-12">
+            {% else %}
             <div class="medium-6 small-10 small-centered columns">
+            {% endif %}
                 <div class="field-wrapper{% if form.username.errors %} error{% endif %}">
                     <label>
                         Email:

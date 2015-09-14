@@ -1,3 +1,7 @@
+/**
+Main front-end configuration
+*/
+
 requirejs.config({
     baseUrl: '/static/js',
     paths: {
@@ -12,22 +16,8 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'foundation'], function ($) {
+require(['app'], function(app) {
     $(document).ready(function(){
-        $(document).foundation();
-
-        //  modalize all data-modal links with #mainModal
-        $('[data-modal]').on('click', function(event){
-            event.preventDefault();
-            var target = $(event.currentTarget);
-            $.ajax({
-                url: target.data('modal'),
-                method: 'GET',
-                success: function(res) {
-                    $('#mainModal').find('[data-body]').html(res);
-                    $('#mainModal').foundation('reveal', 'open');
-                }
-            });
-        });
+        app.start();
     });
 });
