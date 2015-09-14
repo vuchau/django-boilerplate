@@ -7,6 +7,10 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
+        widgets = {
+            'email': forms.EmailInput(attrs={'required': True}),
+            'password': forms.PasswordInput(attrs={'required': True})
+        }
 
     def is_valid(self):
         valid = super(SignupForm, self).is_valid()
@@ -33,6 +37,9 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'required': True}),
+        }
     old_password = forms.CharField(widget=forms.PasswordInput, required=False)
     new_password1 = forms.CharField(widget=forms.PasswordInput, required=False)
     new_password2 = forms.CharField(widget=forms.PasswordInput, required=False)
