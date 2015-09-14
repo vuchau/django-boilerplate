@@ -61,7 +61,7 @@ def edit_profile(request):
             user = User.objects.get(id=request.user.id)
             user.__dict__.update(**form.cleaned_data)
             user.save()
-            return redirect('profile_edit')
+            return redirect('dashboard')
     else:
         form = UserEditForm(instance=request.user)
 
