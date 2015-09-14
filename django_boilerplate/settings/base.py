@@ -86,7 +86,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 WSGI_APPLICATION = 'django_boilerplate.wsgi.application'
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -112,3 +111,5 @@ STATICFILES_DIRS = (
 SETTINGS_EXPORT = [
     'SITE_NAME',
 ]
+
+AUTH_USER_MODEL = 'profile.User'

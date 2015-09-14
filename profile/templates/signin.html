@@ -20,10 +20,10 @@
         {% endif %}
 
         <div class="row">
-            <div class="medium-8 medium-centered columns">
-                <div class="fieldWrapper{% if form.username.errors %} error{% endif %}">
+            <div class="medium-6 small-10 small-centered columns">
+                <div class="field-wrapper{% if form.username.errors %} error{% endif %}">
                     <label>
-                        Username:
+                        Email:
                         {{ form.username }}
                     </label>
                     {% if form.username.errors %}
@@ -31,7 +31,7 @@
                     {% endif %}
                 </div>
 
-                <div class="fieldWrapper{% if form.password.errors %} error{% endif %}">
+                <div class="field-wrapper{% if form.password.errors %} error{% endif %}">
                     <label>
                         Password:
                         {{ form.password }}

@@ -10,7 +10,6 @@
         {% if user.is_authenticated %}
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
-            <li><a href="{% url 'profile_edit_password' %}">Change Password</a></li>
             <li><a href="{% url 'signout' %}">Sign out</a></li>
         {% else %}
             <li><a href="{% url 'signin' %}" data-modal="{% url 'signin' %}" data-title="Sign In">Sign In</a></li>
