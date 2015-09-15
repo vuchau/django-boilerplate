@@ -5,15 +5,15 @@ module.exports = function(grunt) {
     sass: {
       options: {
         loadPath: [
-          'django_boilerplate/static/bower_components/foundation/scss',
+          'django_boilerplate/assets/bower_components/foundation/scss',
         ]
       },
       dist: {
         options: {
-          style: 'expanded'
+          style: 'compressed'
         },
         files: {
-          'django_boilerplate/static/build/css/app.css': 'django_boilerplate/static/scss/app.scss'
+          'django_boilerplate/assets/build/css/app.css': 'django_boilerplate/assets/scss/app.scss'
         }
       }
     },
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'django_boilerplate/static/scss/**/*.scss',
+          'django_boilerplate/assets/scss/**/*.scss',
         ],
         tasks: ['sass'],
         options: {
@@ -33,9 +33,9 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'django_boilerplate/static/', src: ['images/**'], dest: 'django_boilerplate/static/build/'},
-          {expand: true, cwd: 'django_boilerplate/static/', src: ['fonts/**'], dest: 'django_boilerplate/static/build/'},
-          {expand: true, cwd: 'django_boilerplate/static/bower_components/modernizr', src: ['modernizr.js'], dest: 'django_boilerplate/static/build/js/'},
+          {expand: true, cwd: 'django_boilerplate/assets/', src: ['images/**'], dest: 'django_boilerplate/assets/build/'},
+          {expand: true, cwd: 'django_boilerplate/assets/', src: ['fonts/**'], dest: 'django_boilerplate/assets/build/'},
+          {expand: true, cwd: 'django_boilerplate/assets/bower_components/modernizr', src: ['modernizr.js'], dest: 'django_boilerplate/assets/build/js/'},
         ],
       },
     },
@@ -43,16 +43,16 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          baseUrl: 'django_boilerplate/static/js',
-          out: 'django_boilerplate/static/build/js/app.js',
+          baseUrl: 'django_boilerplate/assets/js',
+          out: 'django_boilerplate/assets/build/js/app.js',
           name: '../bower_components/almond/almond',
           include: 'config',
-          mainConfigFile: 'django_boilerplate/static/js/config.js'
+          mainConfigFile: 'django_boilerplate/assets/js/config.js',
         }
       }
     },
 
-    clean: ["django_boilerplate/static/build"]
+    clean: ["django_boilerplate/assets/build"]
   });
 
   grunt.loadNpmTasks('grunt-contrib-sass');
@@ -61,6 +61,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-  grunt.registerTask('build', ['clean', 'requirejs', 'copy', 'sass']);
+  grunt.registerTask('build', [
+    'clean',
+    'copy',
+    'requirejs',
+    'sass',
+  ]);
   grunt.registerTask('default', ['watch']);
 };

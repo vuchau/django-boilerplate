@@ -1,3 +1,0 @@
-/**
-Analytics code goes here
-*/
