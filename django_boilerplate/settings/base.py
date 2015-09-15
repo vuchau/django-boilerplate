@@ -105,7 +105,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(MODULE_DIR, "static"),
+    os.path.join(MODULE_DIR, "assets"),
 )
 
 SETTINGS_EXPORT = [
