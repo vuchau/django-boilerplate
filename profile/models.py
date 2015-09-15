@@ -50,6 +50,12 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return self.is_admin
+
     def __unicode__(self):
         return "{} {}: {}".format(self.first_name,
                                   self.last_name,
