@@ -113,4 +113,15 @@ SETTINGS_EXPORT = [
     'SITE_NAME',
 ]
 
+
+# Auth user
+
 AUTH_USER_MODEL = 'profile.User'
+
+
+# Email
+
+DEFAULT_EMAIL_SENDER = 'admin@django-boilerplate.com'
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_ACCESS_KEY = ''
+MAILGUN_SERVER_NAME = ''

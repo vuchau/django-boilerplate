@@ -9,6 +9,9 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_boilerplate.settings')
 
 from django.conf import settings
 
+# a fix for auth user error
+settings.AUTH_USER_MODEL = 'auth.User'
+
 app = Celery('django_boilerplate')
 
 # Using a string here means the worker will not have to
