@@ -1,9 +1,7 @@
-from .forms import SignupForm, ProfileEditForm
+from .forms import SigninForm, SignupForm, ProfileEditForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from profile.models import User
 from django.shortcuts import render, redirect
 
 
@@ -30,14 +28,14 @@ def signup(request):
 
 def signin(request):
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = SigninForm(data=request.POST)
         if form.is_valid():
             user = authenticate(**form.cleaned_data)
             login(request, user)
             next_page = request.GET.get('next', 'dashboard')
             return redirect(next_page)
     else:
-        form = AuthenticationForm()
+        form = SigninForm()
 
     base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
     ajax_header = 'Sign In' if request.is_ajax() else ''
@@ -59,9 +57,10 @@ def edit_profile(request):
         form = ProfileEditForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save()
-            auth_user = authenticate(email=user.email,
-                                     password=form.cleaned_data['new_password1'])
-            login(request, auth_user)
+            if form.cleaned_data['new_password1']:
+                auth_user = authenticate(email=user.email,
+                                         password=form.cleaned_data['new_password1'])
+                login(request, auth_user)
             return redirect('dashboard')
     else:
         form = ProfileEditForm(instance=request.user)

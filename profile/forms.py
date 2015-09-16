@@ -1,6 +1,13 @@
 from django import forms
 from profile.models import User
-from django.db.models import Q
+from django.contrib.auth.forms import AuthenticationForm
+
+
+class SigninForm(AuthenticationForm):
+    def __init__(self, request=None, *args, **kwargs):
+        super(SigninForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'required': True})
+        self.fields['password'].widget.attrs.update({'required': True})
 
 
 class SignupForm(forms.ModelForm):
@@ -21,11 +28,11 @@ class SignupForm(forms.ModelForm):
         try:
             User.objects.get(email=self.cleaned_data['email'])
             self._errors['email'] = ['User with this email already exists.']
-            return False
+            valid = False
         except User.DoesNotExist:
             pass
 
-        return True
+        return valid
 
     def save(self):
         user = super(SignupForm, self).save(commit=False)

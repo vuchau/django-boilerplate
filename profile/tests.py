@@ -1,8 +1,37 @@
-from django.test import TestCase
 from .forms import SignupForm, ProfileEditForm
+from django.test import Client
+from django.test import TestCase
 
 
 class TestSignup(TestCase):
+    def test_signin(self):
+        form = SignupForm({
+            'email': 'foo@bar.com',
+            'password': '123'
+        })
+        self.assertTrue(form.is_valid())
+        form.save()
+
+        c = Client()
+        response = c.post('/profile/signin', {
+            'username': 'foo@bar.com',
+            'password': '123'
+        })
+        self.assertEqual(response.status_code, 302)
+        response = c.get('/dashboard')
+        self.assertEqual(response.status_code, 200)
+
+        response = c.get('/profile/signout')
+        self.assertEqual(response.status_code, 302)
+        response = c.get('/dashboard')
+        self.assertEqual(response.status_code, 302)
+
+        response = c.post('/profile/signin', {
+            'username': 'foo@bar.com',
+            'password': '456'
+        })
+        self.assertEqual(response.status_code, 200)
+
     def test_signup(self):
         form = SignupForm({
             'email': 'foo@bar.com',
