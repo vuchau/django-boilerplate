@@ -3,5 +3,5 @@
 db.sqlite3
 
 node_modules
-django_boilerplate/assets/bower_components
-django_boilerplate/assets/build
+django_boilerplate/static/bower_components
+django_boilerplate/static/build

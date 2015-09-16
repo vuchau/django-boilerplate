@@ -18,7 +18,9 @@
   "dependencies": {
     "almond": "~0.3.1",
     "backbone.marionette": "~2.4.2",
+    "chai": "~3.3.0",
     "foundation": "~5.5.2",
+    "mocha": "~2.3.2",
     "modernizr": "~2.8.3",
     "requirejs": "~2.1.20"
   }
