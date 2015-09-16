@@ -1,4 +1,4 @@
-from .forms import SignupForm, UserEditForm
+from .forms import SignupForm, ProfileEditForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
@@ -56,13 +56,14 @@ def signout(request):
 @login_required(login_url='signin')
 def edit_profile(request):
     if request.method == 'POST':
-        form = UserEditForm(request.POST, instance=request.user)
+        form = ProfileEditForm(request.POST, instance=request.user)
         if form.is_valid():
-            user = User.objects.get(id=request.user.id)
-            user.__dict__.update(**form.cleaned_data)
-            user.save()
+            user = form.save()
+            auth_user = authenticate(email=user.email,
+                                     password=form.cleaned_data['new_password1'])
+            login(request, auth_user)
             return redirect('dashboard')
     else:
-        form = UserEditForm(instance=request.user)
+        form = ProfileEditForm(instance=request.user)
 
     return render(request, 'edit_profile.html', {'form': form})
