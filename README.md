@@ -1,4 +1,4 @@
-# django-boilerplate
+# django-boilerplate [![Circle CI](https://circleci.com/gh/goventurelab/django-boilerplate.svg?style=svg)](https://circleci.com/gh/goventurelab/django-boilerplate)
 Django + PostgreSQL + Celery + REST + Requirejs + Bower + Grunt + Foundation + Modernizr + Mailgun
 
 ### Setup (Ubuntu)
