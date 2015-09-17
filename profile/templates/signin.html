@@ -20,10 +20,14 @@
         {% endif %}
 
         <div class="row">
-            <div class="medium-8 medium-centered columns">
-                <div class="fieldWrapper{% if form.username.errors %} error{% endif %}">
+            {% if ajax_header %}
+            <div class="small-12">
+            {% else %}
+            <div class="medium-6 small-10 small-centered columns">
+            {% endif %}
+                <div class="field-wrapper{% if form.username.errors %} error{% endif %}">
                     <label>
-                        Username:
+                        Email:
                         {{ form.username }}
                     </label>
                     {% if form.username.errors %}
@@ -31,7 +35,7 @@
                     {% endif %}
                 </div>
 
-                <div class="fieldWrapper{% if form.password.errors %} error{% endif %}">
+                <div class="field-wrapper{% if form.password.errors %} error{% endif %}">
                     <label>
                         Password:
                         {{ form.password }}
@@ -42,6 +46,7 @@
                 </div>
 
                 <input type="submit" class="button small" value="Signin" />
+                <a href="{% url 'forgot_password' %}" class="button small warning" data-modal-size="small" data-modal="mainModal" data-url="{% url 'forgot_password' %}">Forgot your password?</a>
             </div>
         </div>
     </form>

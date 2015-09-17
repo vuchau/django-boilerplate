@@ -1,19 +1,29 @@
-from .forms import SignupForm, UserEditForm
+from .forms import SigninForm, SignupForm, ProfileEditForm, ForgotPasswordForm, ResetPasswordForm
+from .models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.shortcuts import render, redirect
+from general.tasks import email
 
 
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(**form.cleaned_data)
-            user.save()
-            auth_user = authenticate(username=form.cleaned_data['username'],
+            user = form.save()
+
+            #   send confirmation email
+            confirm_account_link = reverse('confirm_account', kwargs={'uid': user.uid})
+            absolute_link = request.build_absolute_uri(confirm_account_link)
+            email.delay(to=user.email, template="confirm_account", template_data={
+                "link": absolute_link
+            })
+
+            #   authenticate the user
+            auth_user = authenticate(email=form.cleaned_data['email'],
                                      password=form.cleaned_data['password'])
             login(request, auth_user)
             next_page = request.GET.get('next', 'dashboard')
@@ -31,14 +41,14 @@ def signup(request):
 
 def signin(request):
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = SigninForm(data=request.POST)
         if form.is_valid():
             user = authenticate(**form.cleaned_data)
             login(request, user)
             next_page = request.GET.get('next', 'dashboard')
             return redirect(next_page)
     else:
-        form = AuthenticationForm()
+        form = SigninForm()
 
     base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
     ajax_header = 'Sign In' if request.is_ajax() else ''
@@ -54,36 +64,100 @@ def signout(request):
     return redirect('homepage')
 
 
+def confirm_account(request, uid):
+    show404 = False
+    try:
+        user = User.objects.get(uid=uid)
+    except User.DoesNotExist:
+        #   User doesn't exist
+        show404 = True
+
+    if user.account_confirmed:
+        #   User has not requested a password reset
+        show404 = True
+
+    if show404:
+        raise Http404("Account confirmation token doesn't exist")
+
+    if request.method == 'GET':
+        user.account_confirmed = True
+        user.save()
+        return redirect('dashboard')
+
+
+def reset_password(request, uid):
+    show404 = False
+    try:
+        user = User.objects.get(uid=uid)
+    except User.DoesNotExist:
+        #   User doesn't exist
+        show404 = True
+
+    if not user.reset_password_requested:
+        #   User has not requested a password reset
+        show404 = True
+
+    if show404:
+        raise Http404("Password reset token doesn't exist")
+
+    if request.method == 'POST':
+        form = ResetPasswordForm(data=request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            auth_user = authenticate(email=user.email,
+                                     password=form.cleaned_data['new_password1'])
+            login(request, auth_user)
+            user.reset_password_requested = False
+            user.save()
+            return redirect('dashboard')
+    else:
+        form = ResetPasswordForm()
+
+    return render(request, 'password_reset.html', {
+        'form': form,
+        'uid': uid
+    })
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(data=request.POST)
+        if form.is_valid():
+            try:
+                user = User.objects.get(email=form.cleaned_data['email'])
+                user.reset_password_requested = True
+                user.save()
+                reset_password_link = reverse('reset_password', kwargs={'uid': user.uid})
+                absolute_link = request.build_absolute_uri(reset_password_link)
+                email.delay(to=user.email, template="forgot_password", template_data={
+                    "link": absolute_link
+                })
+            except User.DoesNotExist:
+                pass
+            return redirect('homepage')
+    else:
+        form = ForgotPasswordForm()
+
+    base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
+    ajax_header = 'Forgot Password' if request.is_ajax() else ''
+    return render(request, 'password_forgot.html', {
+        'form': form,
+        'base_template': base_template,
+        'ajax_header': ajax_header})
+
+
 @login_required(login_url='signin')
 def edit_profile(request):
     if request.method == 'POST':
-        form = UserEditForm(request.POST)
-
-        if form.is_valid(request.user.id):
-            user = User.objects.get(id=request.user.id)
-            user.__dict__.update(**form.cleaned_data)
-            user.save()
-            return redirect('profile_edit')
+        form = ProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save()
+            if form.cleaned_data['new_password1']:
+                auth_user = authenticate(email=user.email,
+                                         password=form.cleaned_data['new_password1'])
+                login(request, auth_user)
+            return redirect('dashboard')
     else:
-        form = UserEditForm(request.user._wrapped.__dict__)
+        form = ProfileEditForm(instance=request.user)
 
     return render(request, 'edit_profile.html', {'form': form})
-
-
-@login_required(login_url='signin')
-def edit_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
-
-        if form.is_valid():
-            user = User.objects.get(id=request.user.id)
-            password = form.cleaned_data['new_password1']
-            user.set_password(password)
-            user.save()
-            auth_user = authenticate(username=user.username, password=password)
-            login(request, auth_user)
-            return redirect('profile_edit_password')
-    else:
-        form = PasswordChangeForm(user=request.user,)
-
-    return render(request, 'edit_password.html', {'form': form})

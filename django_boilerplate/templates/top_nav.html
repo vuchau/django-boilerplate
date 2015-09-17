@@ -10,11 +10,10 @@
         {% if user.is_authenticated %}
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
-            <li><a href="{% url 'profile_edit_password' %}">Change Password</a></li>
             <li><a href="{% url 'signout' %}">Sign out</a></li>
         {% else %}
-            <li><a href="{% url 'signin' %}" data-modal="{% url 'signin' %}" data-title="Sign In">Sign In</a></li>
-            <li><a href="{% url 'signup' %}" data-modal="{% url 'signup' %}" data-title="Sign Up">Sign Up</a></li>
+            <li><a href="{% url 'signin' %}" data-modal-size="small" data-modal="mainModal" data-url="{% url 'signin' %}" data-title="Sign In">Sign In</a></li>
+            <li><a href="{% url 'signup' %}" data-modal-size="small" data-modal="mainModal" data-url="{% url 'signup' %}" data-title="Sign Up">Sign Up</a></li>
         {% endif %}
         </ul>
     </section>

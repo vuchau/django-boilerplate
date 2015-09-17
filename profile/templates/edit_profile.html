@@ -16,7 +16,7 @@
         {% endif %}
 
         <div class="row">
-            <div class="medium-8 medium-centered columns">
+            <div class="medium-6 medium-centered columns">
                 <div class="row">
                     <div class="medium-6 columns">
                         <div class="fieldWrapper{% if form.first_name.errors %} error{% endif %}">
@@ -42,16 +42,6 @@
                     </div>
                 </div>
 
-                <div class="fieldWrapper{% if form.username.errors %} error{% endif %}">
-                    <label>
-                        Username:
-                        {{ form.username }}
-                    </label>
-                    {% if form.username.errors %}
-                    <small class="error">{{ form.username.errors }}</small>
-                    {% endif %}
-                </div>
-
                 <div class="fieldWrapper{% if form.email.errors %} error{% endif %}">
                     <label>
                         Email:
@@ -59,6 +49,38 @@
                     </label>
                     {% if form.email.errors %}
                     <small class="error">{{ form.email.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <hr>
+
+                <div class="fieldWrapper{% if form.old_password.errors %} error{% endif %}">
+                    <label>
+                        Current password:
+                        {{ form.old_password }}
+                    </label>
+                    {% if form.old_password.errors %}
+                    <small class="error">{{ form.old_password.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="fieldWrapper{% if form.new_password1.errors %} error{% endif %}">
+                    <label>
+                        New password:
+                        {{ form.new_password1 }}
+                    </label>
+                    {% if form.new_password1.errors %}
+                    <small class="error">{{ form.new_password1.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="fieldWrapper{% if form.new_password2.errors %} error{% endif %}">
+                    <label>
+                        New password confirm:
+                        {{ form.new_password2 }}
+                    </label>
+                    {% if form.new_password2.errors %}
+                    <small class="error">{{ form.new_password2.errors }}</small>
                     {% endif %}
                 </div>
 

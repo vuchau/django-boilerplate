@@ -1,0 +1,22 @@
+machine:
+  python:
+    version:
+      2.7
+
+  environment:
+    DJANGO_SETTINGS_MODULE: django_boilerplate.settings.circleci
+
+checkout:
+  post:
+    - git checkout master
+
+dependencies:
+  pre:
+    - pip install -r requirements/prod.txt
+    - bower install
+    - npm install mocha-phantomjs
+
+test:
+  override:
+    - python manage.py test
+    - mocha-phantomjs django_boilerplate/static/js/mocha_index.html
