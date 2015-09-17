@@ -6,7 +6,7 @@ define(['jquery', 'foundation'], function($){
     var modal = $('#mainModal'),
         modalSizeClasses = ["tiny", "small", "medium", "large", "xlarge", "full"];
     return function() {
-        $('[data-modal="mainModal"]').on('click', function(event){
+        $(document).on('click', '[data-modal="mainModal"]', function(event){
             event.preventDefault();
             var target = $(event.currentTarget),
                 modalSize = target.data('modal-size') || 'medium';
@@ -17,10 +17,12 @@ define(['jquery', 'foundation'], function($){
                     modal.removeClass(modalSizeClasses);
                     modal.addClass(modalSize);
                     modal.find('[data-body]').html(res);
-                    modal.foundation('reveal', 'open', {
-                        animation: 'none',
-                        animation_speed: 0
-                    });
+                    if (!modal.is(":visible")) {
+                        modal.foundation('reveal', 'open', {
+                            animation: 'none',
+                            animation_speed: 0
+                        });
+                    }
                 }
             });
         });
