@@ -16,6 +16,9 @@ def email(subject=None, body=None, from_email=None, to=None, template=None, temp
     if template == 'forgot_password':
         subject = subject or "Password Recovery Link"
         body = body or "Please follow this link to reset your password: {}".format(template_data['link'])
+    elif template == 'confirm_account':
+        subject = subject or "Account Confirmation Link"
+        body = body or "Please follow this link to confirm your account: {}".format(template_data['link'])
 
     send_mail(
         subject or "Email from {}".format(settings.SITE_NAME),

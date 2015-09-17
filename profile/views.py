@@ -13,7 +13,16 @@ def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+
+            #   send confirmation email
+            confirm_account_link = reverse('confirm_account', kwargs={'uid': user.uid})
+            absolute_link = request.build_absolute_uri(confirm_account_link)
+            email.delay(to=user.email, template="confirm_account", template_data={
+                "link": absolute_link
+            })
+
+            #   authenticate the user
             auth_user = authenticate(email=form.cleaned_data['email'],
                                      password=form.cleaned_data['password'])
             login(request, auth_user)
@@ -53,6 +62,27 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('homepage')
+
+
+def confirm_account(request, uid):
+    show404 = False
+    try:
+        user = User.objects.get(uid=uid)
+    except User.DoesNotExist:
+        #   User doesn't exist
+        show404 = True
+
+    if user.account_confirmed:
+        #   User has not requested a password reset
+        show404 = True
+
+    if show404:
+        raise Http404("Account confirmation token doesn't exist")
+
+    if request.method == 'GET':
+        user.account_confirmed = True
+        user.save()
+        return redirect('dashboard')
 
 
 def reset_password(request, uid):

@@ -42,6 +42,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     reset_password_requested = models.BooleanField(default=False)
+    account_confirmed = models.BooleanField(default=False)
 
     objects = UserManager()
 
