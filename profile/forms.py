@@ -1,6 +1,37 @@
 from django import forms
-from profile.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from profile.models import User
+
+
+class ResetPasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = []
+    new_password1 = forms.CharField(widget=forms.PasswordInput({'required': True}), required=False)
+    new_password2 = forms.CharField(widget=forms.PasswordInput({'required': True}), required=False)
+
+    def is_valid(self):
+        valid = super(ResetPasswordForm, self).is_valid()
+
+        if not valid:
+            return valid
+
+        if self.cleaned_data['new_password1'] != self.cleaned_data['new_password2']:
+            self._errors['new_password1'] = 'Passwords must match.'
+            valid = False
+
+        return valid
+
+    def save(self):
+        user = super(ResetPasswordForm, self).save(commit=False)
+        user.set_password(self.cleaned_data['new_password1'])
+        user.save()
+        return user
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'required': 'true'}))
 
 
 class SigninForm(AuthenticationForm):

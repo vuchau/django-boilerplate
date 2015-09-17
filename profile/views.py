@@ -1,8 +1,12 @@
-from .forms import SigninForm, SignupForm, ProfileEditForm
+from .forms import SigninForm, SignupForm, ProfileEditForm, ForgotPasswordForm, ResetPasswordForm
+from .models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.shortcuts import render, redirect
+from general.tasks import email
 
 
 def signup(request):
@@ -49,6 +53,54 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('homepage')
+
+
+def reset_password(request, uid):
+    try:
+        user = User.objects.get(uid=uid)
+    except User.DoesNotExist:
+        raise Http404("Password reset token doesn't exist")
+
+    if request.method == 'POST':
+        form = ResetPasswordForm(data=request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            auth_user = authenticate(email=user.email,
+                                     password=form.cleaned_data['new_password1'])
+            login(request, auth_user)
+            return redirect('dashboard')
+    else:
+        form = ResetPasswordForm()
+
+    return render(request, 'password_reset.html', {
+        'form': form,
+        'uid': uid
+    })
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(data=request.POST)
+        if form.is_valid():
+            try:
+                user = User.objects.get(email=form.cleaned_data['email'])
+                reset_password_link = reverse('reset_password', kwargs={'uid': user.uid})
+                absolute_link = request.build_absolute_uri(reset_password_link)
+                email.delay(to=user.email, template="forgot_password", template_data={
+                    "link": absolute_link
+                })
+            except User.DoesNotExist:
+                pass
+            return redirect('homepage')
+    else:
+        form = ForgotPasswordForm()
+
+    base_template = 'layout_ajax.html' if request.is_ajax() else 'layout.html'
+    ajax_header = 'Forgot Password' if request.is_ajax() else ''
+    return render(request, 'password_forgot.html', {
+        'form': form,
+        'base_template': base_template,
+        'ajax_header': ajax_header})
 
 
 @login_required(login_url='signin')
