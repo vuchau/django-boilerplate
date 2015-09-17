@@ -56,9 +56,18 @@ def signout(request):
 
 
 def reset_password(request, uid):
+    show404 = False
     try:
         user = User.objects.get(uid=uid)
     except User.DoesNotExist:
+        #   User doesn't exist
+        show404 = True
+
+    if not user.reset_password_requested:
+        #   User has not requested a password reset
+        show404 = True
+
+    if show404:
         raise Http404("Password reset token doesn't exist")
 
     if request.method == 'POST':
@@ -68,6 +77,8 @@ def reset_password(request, uid):
             auth_user = authenticate(email=user.email,
                                      password=form.cleaned_data['new_password1'])
             login(request, auth_user)
+            user.reset_password_requested = False
+            user.save()
             return redirect('dashboard')
     else:
         form = ResetPasswordForm()
@@ -84,6 +95,8 @@ def forgot_password(request):
         if form.is_valid():
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
+                user.reset_password_requested = True
+                user.save()
                 reset_password_link = reverse('reset_password', kwargs={'uid': user.uid})
                 absolute_link = request.build_absolute_uri(reset_password_link)
                 email.delay(to=user.email, template="forgot_password", template_data={
